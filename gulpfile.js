@@ -6,7 +6,7 @@ var gulp = require('gulp');
 var pkg = require('./package.json');
 
 var config = {
-  fileName: [pkg.name, pkg.version].join('.'),
+  fileName: pkg.name,
   paths: {
     root: __dirname,
     entry: 'src/tracker.js',
