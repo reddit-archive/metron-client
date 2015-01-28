@@ -1,15 +1,15 @@
-(function(global, undefined) {
-  'use strict';
+'use strict';
 
-  if (typeof exports !== 'undefined') { // commonjs
-    Lib.ajax = global.require('./request-commonjs');
-  } else if (global.$ && $.ajax) { // browser with jquery
-    Lib.ajax = $.ajax;
-    return;
-  }
+if (typeof window === 'undefined') { // commonjs
+  // bypass browserify w/variable
+  var ajax = './request-commonjs';
 
+  module.exports = require(ajax);
+} else if (global.$ && $.ajax) { // browser with jquery
+  module.exports = $.ajax;
+} else {
   // Fallback to a minimal ajax implementation.
-  Lib.ajax = function(url, options) {
+  module.exports = function ajaxShim(url, options) {
     options = options || {};
 
     if (arguments.length === 1) {
@@ -64,4 +64,4 @@
 
   };
 
-})(this);
+}

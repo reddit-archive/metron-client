@@ -7,10 +7,11 @@
   // Define globals exposed by Node.js.
   "browser": true,
 
+  "node": true,
+
   // Global dependencies
   "globals": {
       "ActiveXObject": true,
-      "Lib": true,
       "$": true
   },
 

@@ -1,48 +1,54 @@
-(function(global, undefined) {
-  'use strict';
+'use strict';
 
-  var Tracker = Lib.Tracker = function(options) {
-    this.domain = options.domain;
-  };
+var ajax = require('./ajax');
 
-  Tracker.prototype.send = function(payload, callback, options) {
-    if (!payload) {
-      return;
-    }
+var Tracker = module.exports = function(options) {
+  this.domain = options.domain;
+};
 
-    callback = callback || function() {};
-    options = options || {};
+Tracker.prototype.send = function(payload, callback, options) {
+  if (!payload) {
+    return;
+  }
 
-    var method = options.method || 'POST';
-    var url = this.domain;
-    var contentType;
-    var data;
+  callback = callback || function() {};
+  options = options || {};
 
-    if (method === 'GET') {
-      if (typeof payload !== 'string') {
-        // Serialize payload as query parameters.
-        if (!global.$.param) {
-          throw new Error('Using `GET` requires `$.param`');
-        }
+  var method = options.method || 'POST';
+  var url = this.domain;
+  var contentType;
+  var data;
 
-        payload = $.param(payload);
+  if (method === 'GET') {
+    if (typeof payload !== 'string') {
+      // Serialize payload as query parameters.
+      if (!global.$.param) {
+        throw new Error('Using `GET` requires `$.param`');
       }
 
-      url += ('?' + payload);
-    } else {
-      contentType = 'application/json; charset=utf-8';
-      data = JSON.stringify(payload);
+      payload = $.param(payload);
     }
 
-    var xhr = Lib.ajax({
-      complete: callback,
-      contentType: contentType,
-      data: data,
-      type: method,
-      url: url,
-    });
+    url += ('?' + payload);
+  } else {
+    contentType = 'application/json; charset=utf-8';
+    data = JSON.stringify(payload);
+  }
 
-    return xhr;
-  };
+  var xhr = ajax({
+    complete: callback,
+    contentType: contentType,
+    data: data,
+    type: method,
+    url: url,
+  });
 
-})(this);
+  return xhr;
+};
+
+// Export to `window`, for browser wo/browserify.
+if (typeof window !== 'undefined') {
+  var Metron = (window.Metron = window.Metron || {});
+
+  Metron.Tracker = Tracker;
+}
