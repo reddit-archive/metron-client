@@ -17,13 +17,11 @@ var tracker = new Metron.Tracker({
 });
 
 tracker.send({
-  event: 'comment-embed',
+  event: 'embed',
   action: 'create',
-  payload: {
-    thing: id,
-    sr: sr,
-    live: live,
-  },
+  thing: id,
+  sr: sr,
+  live: live,
 }, callback);
 ```
 
@@ -39,12 +37,10 @@ var tracker = new Metron.Tracker({
 });
 
 var request = tracker.send({
-  event: 'comment-embed',
+  event: 'embed',
   action: 'create',
-  payload: {
-    thing: id,
-    sr: sr,
-    live: live,
-  },
+  thing: id,
+  sr: sr,
+  live: live,
 }, callback);
 ```
